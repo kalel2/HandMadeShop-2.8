@@ -1,0 +1,31 @@
+{
+  "name": "HandMade",
+  "homepage": "https://github.com/kalel2/HandMadeShop-2.8",
+  "authors": [
+    "Sehiy Hrynenko <serhiy@inuits.eu>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6"
+  },
+  "overrides": {
+    "bootstrap": {
+    "main": [
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.min.js"
+        ]
+    }
+  }
+}

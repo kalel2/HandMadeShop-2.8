@@ -1,0 +1,4 @@
+services:
+#    hand_made.example:
+#        class: HandMadeBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
