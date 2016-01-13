@@ -2,12 +2,22 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}HandMade!{% endblock %}</title>
+        {% block css %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block navigation %}
+            {% include '@HandMade/Navigations/navigation_header.html.twig'%}
+        {% endblock %}
+        {% block carousel %}
+            {% include '@HandMade/Slider/carousel_header.html.twig'%}
+        {% endblock %}
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+        {% block js %}
+        {% endblock %}
     </body>
 </html>
