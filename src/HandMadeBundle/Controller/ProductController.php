@@ -63,7 +63,7 @@ class ProductController extends Controller
     public function createAction(Request $request) {
         $product = new Product();
         $form = $this->createForm( new ProductType(), $product);
-        $form->handleRequest($request);
+        $form->bind($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -100,21 +100,45 @@ class ProductController extends Controller
      * Displays a form to edit an existing Product entity.
      *
      * @Route("/{id}/edit", name="product_edit")
-     * @Method({"GET", "POST"})
+     * @Method("GET")
      * @Template()
      */
     public function editAction(Request $request, Product $product)
     {
         $deleteForm = $this->createDeleteForm($product);
-        $editForm = $this->createForm('HandMadeBundle\Form\ProductType', $product);
-        $editForm->handleRequest($request);
+        $editForm = $this->createForm(new ProductType(), $product);
+        
+        return array(
+            'product' => $product,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
+    }
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+    /**
+     * Update a  Product entity.
+     *
+     * @Route("/{id}/update", name="product_update")
+     * @Method("POST")
+     * @Template("HandMadeBundle:Product:edit.html.twig")
+     */
+    public function updateAction(Request $request, $id) {
+        
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('HandMadeBundle:Product')->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('Unable to find Product entity.');
+        }
+        $deleteForm = $this->createDeleteForm($product);
+
+        $editForm = $this->createForm(new ProductType(), $product);
+        $editForm->bind($request);
+
+        if ($editForm->isValid()) {
             $em->persist($product);
             $em->flush();
 
-            return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
+            return $this->redirectToRoute('product_show', array('id' => $product->getId()));
         }
 
         return array(
