@@ -34,6 +34,7 @@ class ProductType extends AbstractType
                 'label' => 'Choose category',
                 'choice_label'=>'name'
             ))
+            ->add('imageFile', 'file')
         ;
     }
 
