@@ -1,4 +1,9 @@
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+   <form action="{{ path ('product_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div>
+            <p>
+                <button class="btn pull-left btn-success offset1" type="submit">{{ 'Create'|trans }}</button>
+            </p>
+        </div>
+    </form>

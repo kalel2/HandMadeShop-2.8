@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Article creation</h1>
+
+    <form action="{{ path ('article_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div>
+            <p>
+                <button class="btn pull-left btn-success offset1" type="submit">{{ 'Create'|trans }}</button>
+            </p>
+        </div>
+    </form>
+
+    <ul>
+        <li>
+            <a href="{{ path('article_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
