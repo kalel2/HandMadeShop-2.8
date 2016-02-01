@@ -35,6 +35,12 @@ class ProductType extends AbstractType
                 'choice_label'=>'name'
             ))
             ->add('imageFile', 'file')
+            ->add('extraImages', 'collection', array(
+                'entry_type' => new ProductImagesType(),
+                'prototype' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ))
         ;
     }
 

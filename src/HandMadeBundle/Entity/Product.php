@@ -4,6 +4,7 @@ namespace HandMadeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -76,10 +77,16 @@ class Product
      */
     private $imageName;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProductImages", mappedBy="product")
+     */
+    protected $extraImages;
+
     public function __construct()
     {
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
+        $this->extraImages = new ArrayCollection();
     }
 
     /**
@@ -303,5 +310,39 @@ class Product
     public function getImageName()
     {
         return $this->imageName;
+    }
+
+    /**
+     * Add extraImage
+     *
+     * @param \HandMadeBundle\Entity\ProductImages $extraImage
+     *
+     * @return Product
+     */
+    public function addExtraImage(\HandMadeBundle\Entity\ProductImages $extraImage)
+    {
+        $this->extraImages[] = $extraImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove extraImage
+     *
+     * @param \HandMadeBundle\Entity\ProductImages $extraImage
+     */
+    public function removeExtraImage(\HandMadeBundle\Entity\ProductImages $extraImage)
+    {
+        $this->extraImages->removeElement($extraImage);
+    }
+
+    /**
+     * Get extraImages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExtraImages()
+    {
+        return $this->extraImages;
     }
 }

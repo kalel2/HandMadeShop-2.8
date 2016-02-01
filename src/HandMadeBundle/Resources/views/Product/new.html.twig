@@ -1,9 +1,44 @@
-
+{% extends "@HandMade/layout.html.twig" %}
+{% block body %}
    <form action="{{ path ('product_create') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
+        {{ form_widget(form.name) }}
+        {{ form_widget(form.price) }}
+        {{ form_widget(form.description) }}
+        {{ form_widget(form.category) }}
+        {{ form_widget(form.imageFile) }}
+        <div id="extra-image-product" data-prototype="{{ form_widget(form.extraImages.vars.prototype)| escape() }}">
+            {% for extraImage in form.extraImages %}
+                {{ form_widget(form.extraImage) }}
+            {% endfor %}
+            <div class="add-new-image">
+                <a href="#" id="add-another-image" class="btn btn-primary">{{ 'Add image'|trans }}</a>
+            </div>
+        </div>
         <div>
             <p>
                 <button class="btn pull-left btn-success offset1" type="submit">{{ 'Create'|trans }}</button>
             </p>
         </div>
     </form>
+{% endblock %}
+{% block js %}
+    {{ parent()}}
+    <script>
+        var countExtraImages = '{{ form.extraImages | length }}';
+        
+        $(document).ready(function($) {
+            var extraImages = $('#extra-image-product');
+            $('#add-another-image').click(function(e){
+                e.preventDefault();
+                var newWidget = extraImages.data('prototype');
+
+                newWidget = newWidget.replace(/__name__/g, countExtraImages);
+                countExtraImages++;
+                
+                extraImages.find('div.add-new-image').before(newWidget);
+                 
+            });
+            
+        });
+    </script>
+{% endblock %}
