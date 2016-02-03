@@ -10,4 +10,15 @@ namespace HandMadeBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getLatestNews($limit=null)
+    {
+        $query = $this->createQueryBuilder('n')
+                ->select('n')
+                ->addOrderBy('n.created','DESC');
+        if (false === is_null($limit)){
+            $query->setMaxResults($limit);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

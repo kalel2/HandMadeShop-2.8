@@ -1,29 +1,16 @@
 <div class="row latest-news">
-        <div class="col-md-4 col-sm-4 news">
-            <img class="img-circle" src="http://placehold.it/140x140"  />
-            <h2> {{ 'Title' | trans }}</h2>
-            <div class="description">
-                <p>
-                    {{ 'Description' | trans }}
-                </p>
+    {% block body %}
+        {% for article in articles %}
+            <div class="col-md-4 col-sm-4 news">
+                {% set arcticleImage = vich_uploader_asset(article, 'imageFile') %}
+                <img class="img-circle" src="{{ asset(['bundles/handmade/', arcticleImage]|join) }}"  />
+                <h2> {{ article.title | trans }}</h2>
+                <div class="description">
+                    <p>
+                        {{ article.shortDescription | trans }}
+                    </p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 col-sm-4 news">
-            <img class="img-circle" src="http://placehold.it/140x140"  />
-            <h2> {{ 'Title' | trans }}</h2>
-            <div class="description">
-                <p>
-                    {{ 'Description' | trans }}
-                </p>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 news">
-            <img class="img-circle" src="http://placehold.it/140x140"  />
-            <h2> {{ 'Title' | trans }}</h2>
-            <div class="description">
-                <p>
-                    {{ 'Description' | trans }}
-                </p>
-            </div>
-        </div>
+        {% endfor %}
+    {% endblock %}
 </div>

@@ -4,14 +4,22 @@ namespace HandMadeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/")
+     * @Template()
      */
     public function indexAction()
     {
-        return $this->render('HandMadeBundle:Default:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $latestNews = $em->getRepository('HandMadeBundle:Article')->getLatestNews(3);
+
+        return array(
+                    'latestNews' => $latestNews
+                );
     }
 }
