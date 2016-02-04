@@ -17,9 +17,11 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $latestNews = $em->getRepository('HandMadeBundle:Article')->getLatestNews(3);
+        $latestProducts = $em->getRepository('HandMadeBundle:Product')->getLatestProducts(6);
 
         return array(
-                    'latestNews' => $latestNews
+                    'latestNews' => $latestNews,
+                    'latestProducts' => $latestProducts
                 );
     }
 }

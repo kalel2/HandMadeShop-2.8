@@ -10,4 +10,15 @@ namespace HandMadeBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getLatestProducts($limit=null)
+    {
+        $query = $this->createQueryBuilder('p')
+                ->select('p')
+                ->addOrderBy('p.created','DESC');
+        if (false === is_null($limit)){
+            $query->setMaxResults($limit);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

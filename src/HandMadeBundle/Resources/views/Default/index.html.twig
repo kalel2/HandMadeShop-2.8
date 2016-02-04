@@ -6,5 +6,14 @@
             <hr>
         </div>
       {% include '@HandMade/blocks/latestNews.html.twig' with { 'articles': latestNews}%}
+      <hr class="col-md-6 col-md-offset-3">
+    </div>
+    <div class="products-block">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <h2 class="title-block">{{ 'Останні пропозиції' | trans }}</h2>
+            <hr>
+        </div>
+      {% include '@HandMade/blocks/latestProducts.html.twig' with { 'products': latestProducts}%}
+      <hr class="col-md-6 col-md-offset-3">
     </div>
 {% endblock %}
