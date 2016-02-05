@@ -5,7 +5,16 @@
                 {% set aproductImage = vich_uploader_asset(product, 'imageFile') %}
                 <img class="thumbnail" src="{{ asset(['bundles/handmade/', aproductImage]|join) }}"  />
                 <h4> {{ product.name | trans }}</h4>
-                <h5> {{ product.price | number_format(2, ',', ' ') }}</h5>
+                <span> {{ product.price | number_format(2, ',', ' ') }}</span>
+                <div class="buttons">
+                    <a class=" btn btn-primary" href="{{ path("product_show", {'id': product.id}) }}">
+                        {{ 'Переглянути' | trans }}
+                    </a>
+                    <a class="btn btn-success" href="#">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        {{ 'В корзину' | trans }}
+                    </a>
+                </div>
             </div>
         {% endfor %}
     {% endblock %}

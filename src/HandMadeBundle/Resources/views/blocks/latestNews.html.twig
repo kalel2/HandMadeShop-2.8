@@ -10,6 +10,12 @@
                         {{ article.shortDescription | trans }}
                     </p>
                 </div>
+                <div class="more-info">
+                    <span class="glyphicon glyphicon-hand-right"></span>
+                    <a href="{{ path("article_show", {'id': article.id }) }}">
+                        {{ 'Детальніше...' | trans }}
+                    </a>
+                </div>
             </div>
         {% endfor %}
     {% endblock %}

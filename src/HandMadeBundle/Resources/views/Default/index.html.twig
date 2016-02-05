@@ -2,7 +2,7 @@
 {% block body %}
     <div class="news-block">
         <div class="col-md-6 col-md-offset-3 text-center">
-            <h2 class="title-block">{{ 'Останні новини' | trans }}</h2>
+            <h2 class="title-block"><span class="icon-news glyphicon glyphicon-list-alt"></span>{{ 'Останні новини' | trans }}</h2>
             <hr>
         </div>
       {% include '@HandMade/blocks/latestNews.html.twig' with { 'articles': latestNews}%}
