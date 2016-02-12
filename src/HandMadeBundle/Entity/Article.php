@@ -5,12 +5,14 @@ namespace HandMadeBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * Article
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="HandMadeBundle\Repository\ArticleRepository")
+ * @Gedmo\TranslationEntity(class="HandMadeBundle\Entity\Translation\ArticleTranslation")
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
@@ -27,21 +29,21 @@ class Article
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="shortDescription", type="string", length=255, nullable=true)
      */
     private $shortDescription;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="fullDescription", type="text")
      */
     private $fullDescription;
@@ -56,6 +58,15 @@ class Article
      */
     private $updated;
 
+    /**
+    * @ORM\OneToMany(
+    * targetEntity="HandMadeBundle\Entity\Translation\ArticleTranslation",
+    * mappedBy="object",
+    * cascade={"persist", "remove"}
+    * )
+    */
+    private $translations;
+
      /**
      * @Vich\UploadableField(mapping="article_image", fileNameProperty="imageName")
      *
@@ -64,7 +75,7 @@ class Article
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
