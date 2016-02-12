@@ -67,6 +67,12 @@ class Article
     */
     private $translations;
 
+    /**
+     * Required for Translatable behaviour
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
      /**
      * @Vich\UploadableField(mapping="article_image", fileNameProperty="imageName")
      *
@@ -85,6 +91,7 @@ class Article
     {
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
+        $this->translations = new ArrayCollection;
     }
 
     /**
@@ -278,6 +285,32 @@ class Article
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    public function addTranslation(ProfileTranslation $t)
+    {
+        $this->translations->add($t);
+        $t->setObject($this);
+    }
+
+    public function removeTranslation(ProfileTranslation $t)
+    {
+        $this->translations->removeElement($t);
+    }
+
+    public function setTranslations($translations)
+    {
+        $this->translations = $translations;
     }
 
 }
