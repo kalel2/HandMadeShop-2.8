@@ -2,8 +2,8 @@
     {% block body %}
         {% for product in products %}
             <div class="col-md-4 col-sm-4 products">
-                {% set aproductImage = vich_uploader_asset(product, 'imageFile') %}
-                <img class="thumbnail" src="{{ asset(['bundles/handmade/', aproductImage]|join) }}"  />
+                {% set productImage = vich_uploader_asset(product, 'imageFile') %}
+                <img class="thumbnail" src="{{ asset(['bundles/handmade/', productImage]|join) }}"  />
                 <h4> {{ product.name | trans }}</h4>
                 <span> {{ product.price | number_format(2, ',', ' ') }}</span>
                 <div class="buttons">
