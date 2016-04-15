@@ -313,4 +313,14 @@ class Article
         $this->translations = $translations;
     }
 
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
 }

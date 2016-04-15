@@ -1,6 +1,8 @@
 <?php
 
 namespace HandMadeBundle\Repository;
+use Doctrine\ORM\Query;
+use Gedmo\Translatable\TranslatableListener;
 
 /**
  * ArticleRepository
@@ -20,5 +22,27 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         }
 
         return $query->getQuery()->getResult();
+    }
+
+    public function findArticleByLocale($locale, $id)
+    {
+        $queryBuilder = $this->createQueryBuilder("a");
+
+        $queryBuilder
+                ->select('a')
+            ->where("a.id = :id")
+            ->setParameter('id', $id)
+        ;
+
+        $query = $queryBuilder->getQuery();
+
+        $query->setHint(
+            Query::HINT_CUSTOM_OUTPUT_WALKER,
+            'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
+        );
+
+        $query->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale);
+
+        return $query->getResult();
     }
 }

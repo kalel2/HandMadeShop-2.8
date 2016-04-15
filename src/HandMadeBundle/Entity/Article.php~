@@ -5,12 +5,14 @@ namespace HandMadeBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * Article
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="HandMadeBundle\Repository\ArticleRepository")
+ * @Gedmo\TranslationEntity(class="HandMadeBundle\Entity\Translation\ArticleTranslation")
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
@@ -27,21 +29,21 @@ class Article
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="desciption", type="string", length=255)
+     * @Gedmo\Translatable
+     * @ORM\Column(name="shortDescription", type="string", length=255, nullable=true)
      */
-    private $desciption;
+    private $shortDescription;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="fullDescription", type="text")
      */
     private $fullDescription;
@@ -49,12 +51,27 @@ class Article
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $created;
+    private $created;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $updated;
+    private $updated;
+
+    /**
+    * @ORM\OneToMany(
+    * targetEntity="HandMadeBundle\Entity\Translation\ArticleTranslation",
+    * mappedBy="object",
+    * cascade={"persist", "remove"}
+    * )
+    */
+    private $translations;
+
+    /**
+     * Required for Translatable behaviour
+     * @Gedmo\Locale
+     */
+    protected $locale;
 
      /**
      * @Vich\UploadableField(mapping="article_image", fileNameProperty="imageName")
@@ -64,7 +81,7 @@ class Article
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
@@ -74,6 +91,7 @@ class Article
     {
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
+        $this->translations = new ArrayCollection;
     }
 
     /**
@@ -92,6 +110,52 @@ class Article
         $this->created = new \DateTime();
     }
 
+    /**
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set imageName
+     *
+     * @param string $imageName
+     *
+     * @return Article
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get imageName
+     *
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
 
     /**
      * Get id
@@ -128,27 +192,27 @@ class Article
     }
 
     /**
-     * Set desciption
+     * Set shortDescription
      *
-     * @param string $desciption
+     * @param string $shortDescription
      *
      * @return Article
      */
-    public function setDesciption($desciption)
+    public function setShortDescription($shortDescription)
     {
-        $this->desciption = $desciption;
+        $this->shortDescription = $shortDescription;
 
         return $this;
     }
 
     /**
-     * Get desciption
+     * Get shortDescription
      *
      * @return string
      */
-    public function getDesciption()
+    public function getShortDescription()
     {
-        return $this->desciption;
+        return $this->shortDescription;
     }
 
     /**
@@ -174,5 +238,79 @@ class Article
     {
         return $this->fullDescription;
     }
-}
 
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return Article
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Article
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    public function addTranslation(ProfileTranslation $t)
+    {
+        $this->translations->add($t);
+        $t->setObject($this);
+    }
+
+    public function removeTranslation(ProfileTranslation $t)
+    {
+        $this->translations->removeElement($t);
+    }
+
+    public function setTranslations($translations)
+    {
+        $this->translations = $translations;
+    }
+
+}
